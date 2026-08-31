@@ -15,4 +15,4 @@ export PATH="$PATH:$FLUTTER_HOME/bin"
 
 flutter config --enable-web
 flutter pub get
-flutter build web --release
+flutter build web --release --csp --no-web-resources-cdn

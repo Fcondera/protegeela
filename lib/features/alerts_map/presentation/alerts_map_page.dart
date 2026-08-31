@@ -39,12 +39,15 @@ class _AlertsMapPageState extends ConsumerState<AlertsMapPage> {
   Future<void> _loadAlerts() async {
     setState(() => _loading = true);
     try {
-      _alerts = await ref.read(alertsMapRepositoryProvider).publicAlertsInBounds(
-            south: -90,
-            west: -180,
-            north: 90,
-            east: 180,
-          );
+      final demoAlerts = await ref.read(publicAlertMarkersProvider.future);
+      _alerts = demoAlerts.isNotEmpty
+          ? demoAlerts
+          : await ref.read(alertsMapRepositoryProvider).publicAlertsInBounds(
+                south: -90,
+                west: -180,
+                north: 90,
+                east: 180,
+              );
     } catch (_) {
       _alerts = const [];
     } finally {

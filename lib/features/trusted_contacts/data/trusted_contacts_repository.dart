@@ -3,12 +3,28 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../core/services/supabase_providers.dart';
 import '../../../shared/models/trusted_contact.dart';
+import '../../authentication/data/demo_session_repository.dart';
 
 final trustedContactsRepositoryProvider = Provider<TrustedContactsRepository>((ref) {
   return TrustedContactsRepository(ref.watch(supabaseClientProvider));
 });
 
 final trustedContactsProvider = FutureProvider<List<TrustedContact>>((ref) async {
+  final demoActive = await ref.watch(demoSessionProvider.future);
+  if (demoActive) {
+    return const [
+      TrustedContact(
+        id: 'demo-contact',
+        ownerUserId: 'demo-user',
+        name: 'Contato demonstrativo',
+        phone: '(00) 00000-0000',
+        relationship: 'demo',
+        invitationStatus: 'accepted',
+        canViewExactLocation: true,
+        isPrimary: true,
+      ),
+    ];
+  }
   ref.watch(authStateProvider);
   return ref.watch(trustedContactsRepositoryProvider).listMine();
 });

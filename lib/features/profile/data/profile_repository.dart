@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../core/services/supabase_providers.dart';
+import '../../authentication/data/demo_session_repository.dart';
 import '../../../shared/models/app_profile.dart';
 
 final profileRepositoryProvider = Provider<ProfileRepository>((ref) {
@@ -9,6 +10,16 @@ final profileRepositoryProvider = Provider<ProfileRepository>((ref) {
 });
 
 final currentProfileProvider = FutureProvider<AppProfile?>((ref) async {
+  final demoActive = await ref.watch(demoSessionProvider.future);
+  if (demoActive) {
+    return const AppProfile(
+      id: 'demo-user',
+      fullName: 'Usuaria Temporaria',
+      phone: '(00) 00000-0000',
+      role: 'user',
+      privacyMode: 'discreet',
+    );
+  }
   ref.watch(authStateProvider);
   return ref.watch(profileRepositoryProvider).currentProfile();
 });

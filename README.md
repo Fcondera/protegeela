@@ -35,6 +35,7 @@ Leia tambem:
 ## O que o MVP entrega
 
 - Cadastro, login, recuperacao de senha e perfil.
+- Entrada temporaria local para demonstracao sem cadastro.
 - Rede de contatos de confianca.
 - Botao de emergencia com pressionamento por 5 segundos.
 - Criacao, atualizacao e encerramento de alertas via Edge Functions.
@@ -93,6 +94,20 @@ flutter test
 flutter analyze
 flutter build web --release
 ```
+
+## Conta temporaria
+
+Na tela de login existe a opcao `Entrar temporariamente`.
+
+Esse modo serve para demonstracao rapida no navegador:
+
+- Nao cria conta real.
+- Nao envia alertas reais.
+- Nao avisa contatos reais.
+- Usa perfil, contato, ponto de apoio e alerta ficticios.
+- Mantem a sessao apenas localmente no navegador.
+
+Para uso real, configure Supabase e crie uma conta autenticada.
 
 Tambem e possivel usar `--dart-define`:
 

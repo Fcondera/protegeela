@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/utils/validators.dart';
 import '../../../core/widgets/app_state_view.dart';
 import '../../../core/widgets/quick_exit_button.dart';
+import '../../authentication/data/demo_session_repository.dart';
 import '../data/trusted_contacts_repository.dart';
 
 class TrustedContactsPage extends ConsumerWidget {
@@ -122,6 +123,15 @@ class TrustedContactsPage extends ConsumerWidget {
     );
 
     if (saved == true) {
+      final demoActive = await ref.read(demoSessionProvider.future);
+      if (demoActive) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Contato temporario nao e salvo. Crie uma conta para enviar convites reais.')),
+          );
+        }
+        return;
+      }
       await ref.read(trustedContactsRepositoryProvider).addContact(
             name: name.text,
             phone: phone.text,

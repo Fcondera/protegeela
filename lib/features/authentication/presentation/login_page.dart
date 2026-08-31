@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/utils/validators.dart';
 import '../data/auth_repository.dart';
+import '../data/demo_session_repository.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -40,6 +41,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     } finally {
       if (mounted) setState(() => _loading = false);
     }
+  }
+
+  Future<void> _startDemoSession() async {
+    await ref.read(demoSessionRepositoryProvider).start();
+    ref.invalidate(demoSessionProvider);
+    if (mounted) context.go('/home');
   }
 
   @override
@@ -79,6 +86,17 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 FilledButton(
                   onPressed: _loading ? null : _submit,
                   child: _loading ? const CircularProgressIndicator() : const Text('Entrar'),
+                ),
+                const SizedBox(height: 12),
+                OutlinedButton.icon(
+                  onPressed: _loading ? null : _startDemoSession,
+                  icon: const Icon(Icons.schedule),
+                  label: const Text('Entrar temporariamente'),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'Modo temporario usa dados ficticios neste navegador. Alertas reais dependem de conta, Supabase e contatos configurados.',
+                  textAlign: TextAlign.center,
                 ),
                 TextButton(onPressed: () => context.go('/recuperar-senha'), child: const Text('Esqueci minha senha')),
                 TextButton(onPressed: () => context.go('/cadastro'), child: const Text('Criar conta')),

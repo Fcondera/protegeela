@@ -10,6 +10,7 @@ import '../../../core/services/emergency_call_service.dart';
 import '../../../core/services/location_service.dart';
 import '../../../core/widgets/app_state_view.dart';
 import '../../../core/widgets/quick_exit_button.dart';
+import '../../authentication/data/demo_session_repository.dart';
 import '../data/emergency_controller.dart';
 import '../data/emergency_repository.dart';
 import '../data/emergency_services_repository.dart';
@@ -151,6 +152,11 @@ class ActiveAlertPage extends ConsumerWidget {
 
   Future<void> _updateLocation(BuildContext context, WidgetRef ref, String alertId) async {
     try {
+      final demoActive = await ref.read(demoSessionProvider.future);
+      if (demoActive) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Localizacao temporaria simulada. Nenhum dado real foi enviado.')));
+        return;
+      }
       final location = await ref.read(locationServiceProvider).captureCurrent();
       await ref.read(emergencyRepositoryProvider).updateLocation(alertId: alertId, location: location);
       if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Localizacao atualizada.')));

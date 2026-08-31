@@ -9,6 +9,7 @@ import '../core/services/supabase_providers.dart';
 import '../core/widgets/responsive_shell.dart';
 import '../features/admin/presentation/admin_dashboard_page.dart';
 import '../features/alerts_map/presentation/alerts_map_page.dart';
+import '../features/authentication/data/demo_session_repository.dart';
 import '../features/authentication/presentation/email_confirmation_page.dart';
 import '../features/authentication/presentation/login_page.dart';
 import '../features/authentication/presentation/register_page.dart';
@@ -37,8 +38,9 @@ final routerProvider = Provider<GoRouter>((ref) {
       final path = state.uri.path;
       final isPublic = _publicPaths.contains(path);
       final user = client.auth.currentUser;
+      final demoActive = await ref.read(demoSessionProvider.future);
 
-      if (user == null) return isPublic ? null : '/login';
+      if (user == null && !demoActive) return isPublic ? null : '/login';
       if (isPublic && path != '/neutral') return '/home';
 
       final profile = await ref.read(currentProfileProvider.future);

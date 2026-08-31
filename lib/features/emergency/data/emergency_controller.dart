@@ -4,6 +4,8 @@ import 'package:uuid/uuid.dart';
 import '../../../core/errors/app_exception.dart';
 import '../../../core/services/location_service.dart';
 import '../../../core/services/notification_service.dart';
+import '../../../shared/models/emergency_alert.dart';
+import '../../authentication/data/demo_session_repository.dart';
 import '../../notifications/data/notification_center_repository.dart';
 import '../domain/emergency_state.dart';
 import 'emergency_repository.dart';
@@ -18,6 +20,8 @@ class EmergencyController extends AsyncNotifier<EmergencyState> {
 
   @override
   Future<EmergencyState> build() async {
+    final demoActive = await ref.watch(demoSessionProvider.future);
+    if (demoActive) return const EmergencyState();
     final alert = await ref.watch(emergencyRepositoryProvider).activeAlert();
     return EmergencyState(activeAlert: alert);
   }
@@ -28,6 +32,30 @@ class EmergencyController extends AsyncNotifier<EmergencyState> {
 
     final requestId = _uuid.v4();
     state = AsyncData(EmergencyState(isSending: true, clientRequestId: requestId));
+
+    final demoActive = await ref.read(demoSessionProvider.future);
+    if (demoActive) {
+      final alert = EmergencyAlert(
+        id: 'demo-alert-$requestId',
+        userId: 'demo-user',
+        alertType: alertType,
+        status: 'active',
+        isSilent: isSilent,
+        locationStatus: 'captured',
+        startedAt: DateTime.now().toUtc(),
+        publicVisibility: true,
+        publicLatitude: -3.119,
+        publicLongitude: -60.022,
+      );
+      await ref.read(notificationServiceProvider).notifyAlertCreated(alert.id);
+      state = AsyncData(
+        EmergencyState(
+          activeAlert: alert,
+          lastMessage: 'Alerta temporario criado apenas neste navegador. Nenhum contato real foi avisado.',
+        ),
+      );
+      return;
+    }
 
     LocationCapture? location;
     var locationStatus = 'location_unavailable';
@@ -45,7 +73,7 @@ class EmergencyController extends AsyncNotifier<EmergencyState> {
             isSilent: isSilent,
             location: location,
             locationStatus: locationStatus,
-      );
+          );
       await ref.read(notificationServiceProvider).notifyAlertCreated(alert.id);
       try {
         await ref.read(notificationCenterRepositoryProvider).markAlertNotificationsSent(alert.id);
@@ -76,6 +104,11 @@ class EmergencyController extends AsyncNotifier<EmergencyState> {
   Future<void> closeAlert({required String reason, String? pin}) async {
     final alert = state.valueOrNull?.activeAlert;
     if (alert == null) return;
+    final demoActive = await ref.read(demoSessionProvider.future);
+    if (demoActive) {
+      state = const AsyncData(EmergencyState(lastMessage: 'Alerta temporario encerrado.'));
+      return;
+    }
     await ref.read(emergencyRepositoryProvider).closeAlert(alertId: alert.id, reason: reason, pin: pin);
     state = const AsyncData(EmergencyState(lastMessage: 'Alerta encerrado.'));
   }

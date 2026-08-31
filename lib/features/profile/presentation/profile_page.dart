@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/widgets/app_state_view.dart';
+import '../../authentication/data/demo_session_repository.dart';
 import '../../authentication/data/auth_repository.dart';
 import '../data/profile_preferences.dart';
 import '../data/profile_repository.dart';
@@ -53,8 +54,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               SwitchListTile(
                 value: value.privacyMode == 'discreet',
                 onChanged: (enabled) async {
-                  await ref.read(profileRepositoryProvider).updatePrivacyMode(enabled ? 'discreet' : 'standard');
-                  ref.invalidate(currentProfileProvider);
+                  final demoActive = await ref.read(demoSessionProvider.future);
+                  if (!demoActive) {
+                    await ref.read(profileRepositoryProvider).updatePrivacyMode(enabled ? 'discreet' : 'standard');
+                    ref.invalidate(currentProfileProvider);
+                  }
                 },
                 title: const Text('Textos discretos nas notificacoes'),
               ),
@@ -80,7 +84,13 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 leading: const Icon(Icons.logout),
                 title: const Text('Sair'),
                 onTap: () async {
-                  await ref.read(authRepositoryProvider).signOut();
+                  final demoActive = await ref.read(demoSessionProvider.future);
+                  if (demoActive) {
+                    await ref.read(demoSessionRepositoryProvider).end();
+                    ref.invalidate(demoSessionProvider);
+                  } else {
+                    await ref.read(authRepositoryProvider).signOut();
+                  }
                   if (context.mounted) context.go('/login');
                 },
               ),

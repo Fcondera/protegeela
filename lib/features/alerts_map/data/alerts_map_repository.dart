@@ -2,9 +2,28 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../core/services/supabase_providers.dart';
+import '../../authentication/data/demo_session_repository.dart';
 
 final alertsMapRepositoryProvider = Provider<AlertsMapRepository>((ref) {
   return AlertsMapRepository(ref.watch(supabaseClientProvider));
+});
+
+final publicAlertMarkersProvider = FutureProvider<List<PublicAlertMarker>>((ref) async {
+  final demoActive = await ref.watch(demoSessionProvider.future);
+  if (demoActive) {
+    return [
+      PublicAlertMarker(
+        id: 'demo-alert-public',
+        alertType: 'immediate_danger',
+        status: 'active',
+        latitude: -3.119,
+        longitude: -60.022,
+        radiusMeters: 500,
+        startedAt: DateTime.now().toUtc(),
+      ),
+    ];
+  }
+  return const [];
 });
 
 class PublicAlertMarker {

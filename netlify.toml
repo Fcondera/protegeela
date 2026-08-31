@@ -1,5 +1,5 @@
 [build]
-  command = "flutter pub get && flutter build web --release"
+  command = "bash build.sh"
   publish = "build/web"
 
 [build.environment]

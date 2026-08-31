@@ -1,67 +1,249 @@
 # ProtegeEla
 
-ProtegeEla e uma PWA open source em Flutter para alertas de emergencia, rede de contatos de confianca, compartilhamento de localizacao com privacidade e mapa de pontos de apoio.
+ProtegeEla e um aplicativo PWA open source criado para apoiar mulheres em situacoes de risco, oferecendo acionamento rapido de ajuda, rede de contatos de confianca, compartilhamento de localizacao com privacidade e mapa com pontos de apoio.
 
-Este repositorio existe para que desenvolvedores, organizacoes sociais, pesquisadoras, equipes publicas e comunidades possam estudar, auditar, adaptar e melhorar uma ferramenta de apoio a seguranca de mulheres.
+O projeto foi desenvolvido com foco em seguranca, acessibilidade, responsabilidade social e arquitetura moderna. Ele pode ser estudado, auditado, adaptado e evoluido por comunidades, organizacoes sociais, equipes publicas, estudantes e desenvolvedores.
 
-> Importante: o ProtegeEla nao substitui policia, servicos oficiais de emergencia, atendimento medico, assistencia juridica ou acompanhamento profissional. Ele e uma camada de apoio para acionar pessoas autorizadas e organizar informacoes com privacidade.
+> O ProtegeEla nao substitui policia, servicos oficiais de emergencia, atendimento medico, assistencia juridica ou acompanhamento profissional. Ele e uma ferramenta complementar para facilitar comunicacao, apoio e organizacao de informacoes em momentos sensiveis.
 
-## Status do projeto
+## Visao do aplicativo
 
-Versao inicial em desenvolvimento. O projeto ja inclui base Flutter, PWA, Supabase, migrations, RLS, Edge Functions, telas principais e testes iniciais.
+O objetivo do ProtegeEla e permitir que uma usuaria consiga pedir ajuda de forma simples, discreta e segura, conectando sua rede de apoio e protegendo dados sensiveis.
 
-Antes de qualquer uso real, faca uma revisao tecnica, juridica, de seguranca, privacidade, acessibilidade e atendimento local.
+O aplicativo foi pensado para funcionar em celular, tablet e computador, com instalacao como PWA e interface responsiva. A experiencia prioriza botoes grandes, linguagem clara, navegacao simples, contraste adequado e privacidade por padrao.
 
-## Open source
+## Demonstracao
 
-O ProtegeEla e distribuido sob licenca MIT. Voce pode usar, estudar, modificar e distribuir o codigo, respeitando os termos da licenca.
+Versao publicada:
 
-Ao contribuir, mantenha estes principios:
+```text
+https://protegeela.netlify.app
+```
 
-- Privacidade por padrao.
-- Localizacao exata nunca publica.
-- Nenhuma chave secreta no frontend.
-- Nenhum dado real de vitimas, contatos ou ocorrencias em commits.
-- Textos cuidadosos, sem promessas irreais de protecao ou rastreamento.
-- Recursos sensiveis sempre revisados com RLS, testes e auditoria.
+Na tela de login existe a opcao `Entrar temporariamente`, criada para demonstracao rapida sem cadastro real.
 
-Leia tambem:
+No modo temporario:
 
-- `CONTRIBUTING.md`
-- `SECURITY.md`
-- `CODE_OF_CONDUCT.md`
-- `LICENSE`
+- A sessao fica apenas no navegador.
+- O perfil e ficticio.
+- Os contatos sao ficticios.
+- Os pontos de apoio sao ficticios.
+- Os alertas nao sao enviados para pessoas reais.
+- Nenhuma emergencia real e acionada.
 
-## O que o MVP entrega
+Para uso real, e necessario configurar Supabase, banco de dados, RLS, Edge Functions e dados verificados.
 
-- Cadastro, login, recuperacao de senha e perfil.
-- Entrada temporaria local para demonstracao sem cadastro.
-- Rede de contatos de confianca.
-- Botao de emergencia com pressionamento por 5 segundos.
-- Criacao, atualizacao e encerramento de alertas via Edge Functions.
-- Captura de localizacao quando autorizada.
-- Fallback quando localizacao ou internet falham.
-- Mapa com alertas aproximados e pontos de apoio.
-- Conteudos de seguranca gerenciaveis.
-- Painel administrativo inicial.
-- PWA com manifest, pagina offline e service worker seguro.
+## Principais funcionalidades
 
-## Stack
+### Autenticacao e onboarding
 
-- Flutter Web com Material 3.
-- Riverpod para estado.
-- GoRouter para navegacao.
-- Supabase Auth, PostgreSQL, RLS, Realtime e Edge Functions.
-- Flutter Map com OpenStreetMap.
-- Geolocator e URL Launcher.
+- Splash screen.
+- Apresentacao do aplicativo.
+- Explicacao sobre privacidade.
+- Solicitacao contextual de localizacao.
+- Cadastro com nome, e-mail, telefone, senha e aceite de termos.
+- Login com Supabase Auth.
+- Recuperacao de senha sem revelar se o e-mail existe.
+- Confirmacao de e-mail.
+- Criacao de perfil.
+- Cadastro opcional do primeiro contato de confianca.
+- Logout.
+- Protecao de rotas privadas.
+- Entrada temporaria para demonstracao.
 
-## Estrutura
+### Tela inicial
+
+- Saudacao com o primeiro nome da usuaria.
+- Status atual de seguranca.
+- Botao central de emergencia como elemento principal.
+- Atalhos para mapa, contatos, pontos de apoio e orientacoes.
+- Navegacao inferior no celular.
+- Navegacao lateral no desktop.
+
+### Botao de emergencia
+
+O componente `EmergencyButton` foi criado para reduzir disparos acidentais e manter acessibilidade.
+
+Funcionalidades:
+
+- Pressionar e segurar por 5 segundos.
+- Progresso circular durante o pressionamento.
+- Feedback haptico quando disponivel.
+- Confirmacao com contagem regressiva de 5 segundos.
+- Opcao de enviar imediatamente.
+- Opcao de cancelar.
+- Opcao de ativar silenciosamente.
+- Envio automatico ao final da contagem.
+- Prevencao de disparo duplicado.
+- Suporte a teclado e leitores de tela.
+
+Ao ativar um alerta, o app tenta capturar a localizacao atual. Se GPS, permissao ou internet falharem, o fluxo nao bloqueia o pedido de ajuda. O alerta pode ser registrado como pendente e sincronizado depois usando `client_request_id` para evitar duplicidade.
+
+### Alerta ativo
+
+A tela de alerta ativo mostra:
+
+- Status do alerta.
+- Horario de ativacao.
+- Mapa com a ultima localizacao disponivel.
+- Precisao aproximada.
+- Informacoes sobre contatos avisados.
+- Botao para ligar para servico de emergencia configurado.
+- Botao para atualizar localizacao.
+- Botao para informar que esta em local seguro.
+- Botao para encerrar alerta.
+
+Ao encerrar, o sistema registra motivo, data e horario, revoga links de acompanhamento e interrompe atualizacoes de localizacao.
+
+### Localizacao com privacidade
+
+O ProtegeEla separa localizacao exata de localizacao publica aproximada.
+
+- Localizacao exata fica em `alert_locations`.
+- Localizacao exata nao tem leitura publica direta.
+- O mapa comunitario usa coordenadas aproximadas.
+- Contatos so acessam localizacao exata durante alerta ativo e quando autorizados.
+- Links de acompanhamento usam token aleatorio com hash no banco.
+- Alertas encerrados deixam de aparecer publicamente.
+
+### Mapa geral de alertas
+
+A tela `AlertsMapPage` usa OpenStreetMap com Flutter Map.
+
+Ela pode exibir:
+
+- Localizacao de referencia.
+- Alertas ativos permitidos.
+- Areas aproximadas de alertas publicos.
+- Pontos de apoio.
+- Filtros de exibicao.
+- Campo de busca.
+- Botao para centralizar mapa.
+- Legenda de marcadores.
+
+O mapa publico nao mostra nome completo, telefone, foto, endereco ou coordenada exata da pessoa em alerta.
+
+### Rede de contatos de confianca
+
+O aplicativo permite:
+
+- Listar contatos.
+- Adicionar contato.
+- Enviar convite.
+- Aceitar ou recusar vinculo.
+- Remover contato.
+- Definir contato principal.
+- Configurar permissao de localizacao durante alerta.
+
+Um contato nao deve ser considerado ativo sem consentimento.
+
+Durante um alerta, contatos autorizados podem:
+
+- Abrir link seguro.
+- Ver localizacao autorizada.
+- Confirmar recebimento.
+- Informar que estao acompanhando.
+- Informar que acionaram ajuda.
+
+### Pontos de apoio
+
+O app possui tela de lista e mapa para pontos de apoio.
+
+Cada ponto pode conter:
+
+- Nome.
+- Categoria.
+- Descricao.
+- Endereco.
+- Municipio.
+- Estado.
+- Latitude e longitude.
+- Telefone.
+- Horario de funcionamento.
+- Site.
+- Informacoes de acessibilidade.
+- Status de verificacao.
+- Data da ultima verificacao.
+
+O seed do projeto inclui apenas dados ficticios e claramente demonstrativos. Pontos reais devem ser cadastrados somente apos verificacao.
+
+### Conteudos de seguranca
+
+Area com orientacoes gerenciaveis por administrador:
+
+- Como montar uma rede de apoio.
+- Como compartilhar localizacao.
+- Como preservar provas com seguranca.
+- Como buscar atendimento.
+- Como criar um plano de seguranca.
+- Como proteger a conta e o dispositivo.
+
+As telas sensiveis incluem saida rapida e mensagens realistas sobre limitacoes.
+
+### Saida rapida e privacidade visual
+
+O app inclui botao discreto de `Saida rapida` em telas sensiveis.
+
+Ao tocar, a usuaria e redirecionada para uma pagina neutra. O aplicativo nao promete apagar historico do navegador, porque isso nao seria tecnicamente honesto.
+
+Tambem ha configuracoes para:
+
+- Textos discretos em notificacoes.
+- Exigencia de PIN para informacoes sensiveis.
+- Ocultar previa de alerta.
+
+### Notificacoes
+
+Foi criada uma camada abstrata `NotificationService`.
+
+O projeto esta preparado para:
+
+- Novo alerta recebido.
+- Atualizacao de localizacao.
+- Alerta encerrado.
+- Solicitacao de acompanhamento.
+
+Sem push configurado, o app usa fallback interno. Qualquer integracao futura com FCM ou OneSignal deve evitar dados sensiveis no conteudo da notificacao.
+
+### Painel administrativo
+
+Painel protegido para administradores com base para:
+
+- Indicadores agregados.
+- Alertas ativos sem exposicao desnecessaria.
+- Pontos de apoio.
+- Conteudos informativos.
+- Servicos de emergencia.
+- Moderacao.
+- Logs administrativos.
+
+Indicadores previstos:
+
+- Total de alertas.
+- Alertas ativos.
+- Alertas encerrados.
+- Pontos de apoio verificados.
+- Dados agregados sem identificacao pessoal.
+
+## Arquitetura
+
+O projeto segue uma organizacao feature-first:
 
 ```text
 lib/
   app/
+    app.dart
+    router.dart
+    theme.dart
   core/
+    config/
+    constants/
+    errors/
+    services/
+    utils/
+    widgets/
   features/
+    onboarding/
     authentication/
     home/
     emergency/
@@ -73,6 +255,8 @@ lib/
     notifications/
     admin/
   shared/
+    models/
+    providers/
 supabase/
   migrations/
   functions/
@@ -81,67 +265,72 @@ test/
 web/
 ```
 
-## Rodando localmente
+Essa estrutura facilita manutencao, testes e evolucao por comunidade.
 
-Instale Flutter estavel e configure um projeto Supabase. Depois:
+## Tecnologias
 
-```bash
-cp .env.example .env
-flutter pub get
-dart run build_runner build --delete-conflicting-outputs
-flutter run -d chrome
-flutter test
-flutter analyze
-flutter build web --release
-```
+Frontend:
 
-## Conta temporaria
+- Flutter Web.
+- Dart com null safety.
+- Material 3.
+- Riverpod.
+- GoRouter.
+- Supabase Flutter.
+- Flutter Map.
+- OpenStreetMap.
+- Geolocator.
+- URL Launcher.
+- Shared Preferences.
 
-Na tela de login existe a opcao `Entrar temporariamente`.
+Backend:
 
-Esse modo serve para demonstracao rapida no navegador:
+- Supabase.
+- PostgreSQL.
+- Supabase Auth.
+- Row Level Security.
+- Supabase Realtime.
+- Edge Functions.
+- PostGIS.
 
-- Nao cria conta real.
-- Nao envia alertas reais.
-- Nao avisa contatos reais.
-- Usa perfil, contato, ponto de apoio e alerta ficticios.
-- Mantem a sessao apenas localmente no navegador.
+Deploy:
 
-Para uso real, configure Supabase e crie uma conta autenticada.
+- Netlify.
+- PWA manifest.
+- Service worker.
+- Pagina offline.
+- Headers de seguranca.
 
-Tambem e possivel usar `--dart-define`:
+## Banco de dados
 
-```bash
-flutter run -d chrome \
-  --dart-define=SUPABASE_URL=https://your-project-ref.supabase.co \
-  --dart-define=SUPABASE_ANON_KEY=your-public-anon-key
-```
+As migrations incluem:
 
-## Supabase
+- `profiles`
+- `trusted_contacts`
+- `emergency_alerts`
+- `alert_locations`
+- `alert_recipients`
+- `tracking_links`
+- `support_points`
+- `safety_contents`
+- `emergency_services`
+- `audit_logs`
 
-1. Crie um projeto no Supabase.
-2. Copie `Project URL` para `SUPABASE_URL`.
-3. Copie a `anon public key` para `SUPABASE_ANON_KEY`.
-4. Nunca coloque a `service_role key` no Flutter.
-5. Aplique as migrations:
+Tambem foram criados:
 
-```bash
-supabase db push
-supabase db execute --file supabase/seed/seed.sql
-```
-
-Para desenvolvimento local:
-
-```bash
-supabase start
-supabase functions serve --env-file supabase/.env.local
-```
-
-As Edge Functions usam `SUPABASE_SERVICE_ROLE_KEY` somente no ambiente Supabase/local de backend.
+- Enums PostgreSQL.
+- Chaves estrangeiras.
+- Indices.
+- Indices geograficos.
+- Constraints.
+- Triggers de `updated_at`.
+- Funcoes RPC.
+- Politicas RLS.
+- Seed seguro de demonstracao.
 
 ## Edge Functions
 
-Funcoes incluidas:
+Funcoes criadas:
 
 - `create-emergency-alert`
 - `update-alert-location`
@@ -153,23 +342,98 @@ Funcoes incluidas:
 - `send-alert-notifications`
 - `admin-manage-support-point`
 
-Deploy:
+Essas funcoes centralizam operacoes sensiveis e ajudam a proteger regras de negocio que nao devem ficar apenas no frontend.
+
+## Seguranca
+
+Principios aplicados:
+
+- Nunca colocar `service_role key` no frontend.
+- Ativar RLS em todas as tabelas.
+- Proteger localizacao exata.
+- Armazenar tokens apenas com hash.
+- Usar links com expiracao e revogacao.
+- Nao expor telefone, e-mail ou nome completo em consultas publicas.
+- Registrar operacoes administrativas em audit log.
+- Consultar mapa publico por funcao controlada.
+- Evitar cache de dados sensiveis na PWA.
+
+Antes de producao, revise `SECURITY.md` e execute auditoria completa.
+
+## Acessibilidade e responsividade
+
+O projeto foi pensado para atender, quando possivel, WCAG 2.1 AA:
+
+- Contraste adequado.
+- Areas de toque grandes.
+- Labels semanticos.
+- Navegacao por teclado.
+- Foco visivel.
+- Mensagens claras.
+- Layout adaptado para celular, tablet e desktop.
+
+No celular, a navegacao principal usa barra inferior. No desktop, a interface usa navegacao lateral e composicoes mais amplas.
+
+## Como rodar localmente
+
+Instale Flutter estavel, configure Supabase e rode:
 
 ```bash
-supabase functions deploy create-emergency-alert
-supabase functions deploy update-alert-location
-supabase functions deploy close-emergency-alert
-supabase functions deploy create-tracking-link
-supabase functions deploy open-tracking-link
-supabase functions deploy acknowledge-alert
-supabase functions deploy get-public-alerts-in-bounds
-supabase functions deploy send-alert-notifications
-supabase functions deploy admin-manage-support-point
+cp .env.example .env
+flutter pub get
+dart run build_runner build --delete-conflicting-outputs
+flutter run -d chrome
+flutter test
+flutter analyze
+flutter build web --release
 ```
 
-## PWA
+Tambem e possivel usar variaveis via `--dart-define`:
 
-Arquivos principais:
+```bash
+flutter run -d chrome \
+  --dart-define=SUPABASE_URL=https://your-project-ref.supabase.co \
+  --dart-define=SUPABASE_ANON_KEY=your-public-anon-key
+```
+
+## Configuracao Supabase
+
+1. Crie um projeto no Supabase.
+2. Copie `Project URL` para `SUPABASE_URL`.
+3. Copie a `anon public key` para `SUPABASE_ANON_KEY`.
+4. Nunca coloque a `service_role key` no Flutter.
+5. Aplique as migrations.
+6. Rode o seed apenas em ambiente seguro.
+
+```bash
+supabase db push
+supabase db execute --file supabase/seed/seed.sql
+```
+
+Para rodar Edge Functions localmente:
+
+```bash
+supabase start
+supabase functions serve --env-file supabase/.env.local
+```
+
+## Deploy
+
+O projeto inclui `netlify.toml` e `build.sh` para deploy na Netlify.
+
+Fluxo de build:
+
+```bash
+bash build.sh
+```
+
+O script instala Flutter no ambiente da Netlify, habilita web e gera:
+
+```bash
+flutter build web --release --csp --no-web-resources-cdn
+```
+
+Arquivos PWA:
 
 - `web/manifest.json`
 - `web/offline.html`
@@ -177,64 +441,40 @@ Arquivos principais:
 - `web/icons/Icon-192.png`
 - `web/icons/Icon-512.png`
 
-O service worker so faz cache de arquivos estaticos. Ele nao deve armazenar coordenadas exatas, respostas autenticadas, tokens, dados de contatos ou dados sensiveis de alertas.
-
-Para publicar:
-
-```bash
-flutter build web --release
-```
-
-Hospede o conteudo de `build/web` em um provedor com HTTPS. Configure o dominio no provedor escolhido e revise `ALLOWED_ORIGIN` nas Edge Functions.
-
-## Pontos de apoio reais
-
-O seed contem apenas dados ficticios de demonstracao. Cadastre unidades reais somente apos verificacao por equipe responsavel, preferencialmente pelo painel administrativo ou pela Edge Function `admin-manage-support-point`.
-
-Campos esperados: nome, categoria, endereco, municipio, estado, latitude, longitude, telefone, horario, site, acessibilidade, verificacao e data de verificacao.
-
-## Servicos de emergencia
-
-Numeros ficam na tabela `emergency_services`; nao altere o frontend para trocar numeros. Use o painel administrativo ou SQL seguro:
-
-```sql
-insert into public.emergency_services (name, phone, description, region, is_active)
-values ('Nome do servico', 'numero', 'Descricao clara', 'BR-AM', true);
-```
-
-Antes de producao, remova ou desative o numero ficticio `000`.
-
-## Notificacoes
-
-`NotificationService` esta abstraido no Flutter e `send-alert-notifications` mantem fallback interno. Push via FCM ou OneSignal deve ser adicionado sem dados sensiveis no conteudo, respeitando consentimento e modo discreto.
-
-## Revisao de RLS
-
-Revise especialmente:
-
-- `alert_locations`: sem leitura publica direta.
-- `get_public_alerts_in_bounds`: retorna somente coordenadas aproximadas.
-- `profiles`: usuarios nao podem se tornar admin pelo frontend.
-- `tracking_links`: tokens salvos apenas como hash.
-- `support_points`, `safety_contents` e `emergency_services`: escrita apenas admin.
-
 ## Limitacoes conhecidas
 
-- PWA nao garante rastreamento continuo em segundo plano quando o navegador esta fechado.
+- PWA nao garante rastreamento continuo quando o navegador esta fechado.
 - Push notifications variam por navegador e sistema operacional.
 - Ligacoes `tel:` podem nao funcionar em computadores.
-- O projeto precisa de Supabase configurado para sair do modo demo.
-- Conteudos e pontos reais exigem verificacao humana antes de producao.
+- O modo temporario e apenas demonstrativo.
+- Pontos de apoio reais exigem verificacao humana.
+- Uso real exige revisao tecnica, juridica, operacional e de privacidade.
 
-## Checklist de seguranca antes do lancamento
+## Checklist antes do uso real
 
-- Rodar `flutter analyze`, `flutter test` e `flutter build web --release`.
-- Rodar testes das policies principais em ambiente Supabase isolado.
-- Confirmar que nenhuma secret key esta no frontend.
-- Confirmar que `SUPABASE_SERVICE_ROLE_KEY` existe apenas no backend.
-- Remover dados ficticios ou marca-los como demonstracao.
-- Validar que localizacao exata nao aparece no mapa publico.
+- Rodar `flutter analyze`.
+- Rodar `flutter test`.
+- Rodar `flutter build web --release`.
+- Testar fluxo completo de alerta.
+- Revisar todas as policies RLS.
+- Confirmar que nenhuma chave secreta esta no frontend.
+- Confirmar que localizacao exata nao aparece no mapa publico.
 - Validar expiracao e revogacao de links.
 - Revisar textos de notificacao em modo discreto.
 - Revisar dominio, CORS, HTTPS e headers de seguranca.
-- Fazer teste de acessibilidade em celular, tablet e desktop.
+- Validar conteudos com especialistas da rede de atendimento.
+
+## Licenca
+
+Este projeto e open source sob licenca MIT.
+
+## Creditos
+
+Projeto idealizado e desenvolvido por:
+
+```text
+ConderTech
+A desenvolvedora
+```
+
+Assinado por **ConderTech**, a desenvolvedora.

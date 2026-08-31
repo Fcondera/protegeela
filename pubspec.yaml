@@ -1,0 +1,38 @@
+name: protegeela
+description: ProtegeEla is an open source Flutter PWA for trusted emergency alerts, privacy-preserving location sharing, and support resources.
+publish_to: "none"
+version: 0.1.0+1
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  flutter_dotenv: ^5.1.0
+  flutter_map: ^7.0.2
+  flutter_riverpod: ^2.5.1
+  geolocator: ^12.0.0
+  go_router: ^14.2.7
+  intl: ^0.19.0
+  latlong2: ^0.9.1
+  shared_preferences: ^2.3.2
+  supabase_flutter: ^2.6.0
+  url_launcher: ^6.3.0
+  uuid: ^4.5.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  build_runner: ^2.4.12
+  fake_async: ^1.3.1
+  flutter_lints: ^4.0.0
+  mocktail: ^1.0.4
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/config/

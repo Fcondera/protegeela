@@ -1,0 +1,103 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
+import '../core/services/supabase_providers.dart';
+import '../core/widgets/responsive_shell.dart';
+import '../features/admin/presentation/admin_dashboard_page.dart';
+import '../features/alerts_map/presentation/alerts_map_page.dart';
+import '../features/authentication/presentation/email_confirmation_page.dart';
+import '../features/authentication/presentation/login_page.dart';
+import '../features/authentication/presentation/register_page.dart';
+import '../features/authentication/presentation/reset_password_page.dart';
+import '../features/emergency/presentation/active_alert_page.dart';
+import '../features/home/presentation/home_page.dart';
+import '../features/onboarding/presentation/location_intro_page.dart';
+import '../features/onboarding/presentation/neutral_page.dart';
+import '../features/onboarding/presentation/onboarding_page.dart';
+import '../features/onboarding/presentation/privacy_intro_page.dart';
+import '../features/onboarding/presentation/splash_page.dart';
+import '../features/profile/data/profile_repository.dart';
+import '../features/profile/presentation/profile_page.dart';
+import '../features/profile/presentation/profile_setup_page.dart';
+import '../features/safety_content/presentation/safety_content_page.dart';
+import '../features/support_points/presentation/support_points_page.dart';
+import '../features/trusted_contacts/presentation/first_contact_page.dart';
+import '../features/trusted_contacts/presentation/trusted_contacts_page.dart';
+
+final routerProvider = Provider<GoRouter>((ref) {
+  final client = ref.watch(supabaseClientProvider);
+  return GoRouter(
+    initialLocation: '/',
+    refreshListenable: GoRouterRefreshStream(client.auth.onAuthStateChange),
+    redirect: (context, state) async {
+      final path = state.uri.path;
+      final isPublic = _publicPaths.contains(path);
+      final user = client.auth.currentUser;
+
+      if (user == null) return isPublic ? null : '/login';
+      if (isPublic && path != '/neutral') return '/home';
+
+      final profile = await ref.read(currentProfileProvider.future);
+      final profileFlow = path == '/criar-perfil' || path == '/primeiro-contato';
+      if (profile == null && !profileFlow) return '/criar-perfil';
+      return null;
+    },
+    routes: [
+      GoRoute(path: '/', builder: (_, __) => const SplashPage()),
+      GoRoute(path: '/apresentacao', builder: (_, __) => const OnboardingPage()),
+      GoRoute(path: '/privacidade', builder: (_, __) => const PrivacyIntroPage()),
+      GoRoute(path: '/localizacao', builder: (_, __) => const LocationIntroPage()),
+      GoRoute(path: '/login', builder: (_, __) => const LoginPage()),
+      GoRoute(path: '/cadastro', builder: (_, __) => const RegisterPage()),
+      GoRoute(path: '/recuperar-senha', builder: (_, __) => const ResetPasswordPage()),
+      GoRoute(path: '/confirmar-email', builder: (_, __) => const EmailConfirmationPage()),
+      GoRoute(path: '/neutral', builder: (_, __) => const NeutralPage()),
+      GoRoute(path: '/criar-perfil', builder: (_, __) => const ProfileSetupPage()),
+      GoRoute(path: '/primeiro-contato', builder: (_, __) => const FirstContactPage()),
+      ShellRoute(
+        builder: (_, __, child) => ResponsiveShell(child: child),
+        routes: [
+          GoRoute(path: '/home', builder: (_, __) => const HomePage()),
+          GoRoute(path: '/mapa', builder: (_, __) => const AlertsMapPage()),
+          GoRoute(path: '/contatos', builder: (_, __) => const TrustedContactsPage()),
+          GoRoute(path: '/perfil', builder: (_, __) => const ProfilePage()),
+        ],
+      ),
+      GoRoute(path: '/alerta-ativo', builder: (_, __) => const ActiveAlertPage()),
+      GoRoute(path: '/apoio', builder: (_, __) => const SupportPointsPage()),
+      GoRoute(path: '/orientacoes', builder: (_, __) => const SafetyContentPage()),
+      GoRoute(path: '/admin', builder: (_, __) => const AdminDashboardPage()),
+    ],
+  );
+});
+
+const _publicPaths = {
+  '/',
+  '/apresentacao',
+  '/privacidade',
+  '/localizacao',
+  '/login',
+  '/cadastro',
+  '/recuperar-senha',
+  '/confirmar-email',
+  '/neutral',
+};
+
+class GoRouterRefreshStream extends ChangeNotifier {
+  GoRouterRefreshStream(Stream<dynamic> stream) {
+    notifyListeners();
+    _subscription = stream.asBroadcastStream().listen((_) => notifyListeners());
+  }
+
+  late final StreamSubscription<dynamic> _subscription;
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
+}

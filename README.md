@@ -2,7 +2,48 @@
 
 ProtegeEla e uma PWA open source em Flutter para alertas de emergencia, rede de contatos de confianca, compartilhamento de localizacao com privacidade e mapa de pontos de apoio.
 
-O app nao substitui policia, servicos oficiais de emergencia, atendimento medico ou acompanhamento profissional. Ele e uma camada de apoio para acionar pessoas autorizadas e organizar informacoes com privacidade.
+Este repositorio existe para que desenvolvedores, organizacoes sociais, pesquisadoras, equipes publicas e comunidades possam estudar, auditar, adaptar e melhorar uma ferramenta de apoio a seguranca de mulheres.
+
+> Importante: o ProtegeEla nao substitui policia, servicos oficiais de emergencia, atendimento medico, assistencia juridica ou acompanhamento profissional. Ele e uma camada de apoio para acionar pessoas autorizadas e organizar informacoes com privacidade.
+
+## Status do projeto
+
+Versao inicial em desenvolvimento. O projeto ja inclui base Flutter, PWA, Supabase, migrations, RLS, Edge Functions, telas principais e testes iniciais.
+
+Antes de qualquer uso real, faca uma revisao tecnica, juridica, de seguranca, privacidade, acessibilidade e atendimento local.
+
+## Open source
+
+O ProtegeEla e distribuido sob licenca MIT. Voce pode usar, estudar, modificar e distribuir o codigo, respeitando os termos da licenca.
+
+Ao contribuir, mantenha estes principios:
+
+- Privacidade por padrao.
+- Localizacao exata nunca publica.
+- Nenhuma chave secreta no frontend.
+- Nenhum dado real de vitimas, contatos ou ocorrencias em commits.
+- Textos cuidadosos, sem promessas irreais de protecao ou rastreamento.
+- Recursos sensiveis sempre revisados com RLS, testes e auditoria.
+
+Leia tambem:
+
+- `CONTRIBUTING.md`
+- `SECURITY.md`
+- `CODE_OF_CONDUCT.md`
+- `LICENSE`
+
+## O que o MVP entrega
+
+- Cadastro, login, recuperacao de senha e perfil.
+- Rede de contatos de confianca.
+- Botao de emergencia com pressionamento por 5 segundos.
+- Criacao, atualizacao e encerramento de alertas via Edge Functions.
+- Captura de localizacao quando autorizada.
+- Fallback quando localizacao ou internet falham.
+- Mapa com alertas aproximados e pontos de apoio.
+- Conteudos de seguranca gerenciaveis.
+- Painel administrativo inicial.
+- PWA com manifest, pagina offline e service worker seguro.
 
 ## Stack
 
@@ -12,6 +53,32 @@ O app nao substitui policia, servicos oficiais de emergencia, atendimento medico
 - Supabase Auth, PostgreSQL, RLS, Realtime e Edge Functions.
 - Flutter Map com OpenStreetMap.
 - Geolocator e URL Launcher.
+
+## Estrutura
+
+```text
+lib/
+  app/
+  core/
+  features/
+    authentication/
+    home/
+    emergency/
+    alerts_map/
+    trusted_contacts/
+    support_points/
+    safety_content/
+    profile/
+    notifications/
+    admin/
+  shared/
+supabase/
+  migrations/
+  functions/
+  seed/
+test/
+web/
+```
 
 ## Rodando localmente
 

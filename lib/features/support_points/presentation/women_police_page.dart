@@ -8,7 +8,7 @@ import 'package:latlong2/latlong.dart';
 
 import '../../../app/theme.dart';
 import '../../../core/config/app_config.dart';
-import '../../../core/widgets/quick_exit_button.dart';
+import '../../../core/widgets/app_back_button.dart';
 import '../../alerts_map/data/alerts_map_repository.dart';
 
 class WomenPolicePage extends ConsumerStatefulWidget {
@@ -64,6 +64,7 @@ class _WomenPolicePageState extends ConsumerState<WomenPolicePage> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: const AppBackButton(),
         title: const Text('Delegacia da Mulher'),
       ),
       body: SafeArea(

@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/widgets/app_back_button.dart';
+
 class EmailConfirmationPage extends StatelessWidget {
   const EmailConfirmationPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Confirme seu e-mail')),
+      appBar: AppBar(
+        leading: const AppBackButton(fallbackLocation: '/login'),
+        title: const Text('Confirme seu e-mail'),
+      ),
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 560),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/widgets/app_back_button.dart';
 import '../../../core/widgets/app_state_view.dart';
-import '../../../core/widgets/quick_exit_button.dart';
 import '../../profile/data/profile_repository.dart';
 import '../data/admin_repository.dart';
 
@@ -22,7 +22,10 @@ class AdminDashboardPage extends ConsumerWidget {
 
     final metrics = ref.watch(adminMetricsProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text('Administracao')),
+      appBar: AppBar(
+        leading: const AppBackButton(),
+        title: const Text('Administracao'),
+      ),
       body: metrics.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (_, __) => AppStateView(title: 'Erro', message: 'Nao foi possivel carregar indicadores.', actionLabel: 'Tentar novamente', onAction: () => ref.invalidate(adminMetricsProvider)),

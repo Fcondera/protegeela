@@ -7,7 +7,7 @@ import 'package:latlong2/latlong.dart';
 
 import '../../../app/theme.dart';
 import '../../../core/config/app_config.dart';
-import '../../../core/widgets/quick_exit_button.dart';
+import '../../../core/widgets/app_back_button.dart';
 import '../../support_points/data/support_points_repository.dart';
 import '../data/alerts_map_repository.dart';
 
@@ -69,7 +69,10 @@ class _AlertsMapPageState extends ConsumerState<AlertsMapPage> {
     final center = LatLng(config.defaultLatitude, config.defaultLongitude);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Mapa')),
+      appBar: AppBar(
+        leading: const AppBackButton(),
+        title: const Text('Mapa'),
+      ),
       body: LayoutBuilder(
         builder: (context, constraints) {
           final sidePanel = _Panel(

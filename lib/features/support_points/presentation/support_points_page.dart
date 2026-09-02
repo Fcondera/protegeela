@@ -5,8 +5,8 @@ import 'package:latlong2/latlong.dart';
 
 import '../../../app/theme.dart';
 import '../../../core/config/app_config.dart';
+import '../../../core/widgets/app_back_button.dart';
 import '../../../core/widgets/app_state_view.dart';
-import '../../../core/widgets/quick_exit_button.dart';
 import '../data/support_points_repository.dart';
 
 class SupportPointsPage extends ConsumerWidget {
@@ -17,7 +17,10 @@ class SupportPointsPage extends ConsumerWidget {
     final points = ref.watch(supportPointsProvider);
     final config = ref.watch(appConfigProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text('Pontos de apoio')),
+      appBar: AppBar(
+        leading: const AppBackButton(),
+        title: const Text('Pontos de apoio'),
+      ),
       body: points.when(
         loading: () => const Center(
           child: Column(

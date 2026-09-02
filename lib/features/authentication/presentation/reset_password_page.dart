@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/utils/validators.dart';
+import '../../../core/widgets/app_back_button.dart';
 import '../data/auth_repository.dart';
 
 class ResetPasswordPage extends ConsumerStatefulWidget {
@@ -41,7 +42,10 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Recuperar senha')),
+      appBar: AppBar(
+        leading: const AppBackButton(fallbackLocation: '/login'),
+        title: const Text('Recuperar senha'),
+      ),
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 480),

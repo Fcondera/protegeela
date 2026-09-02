@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/widgets/app_back_button.dart';
 import '../../../core/widgets/app_state_view.dart';
-import '../../../core/widgets/quick_exit_button.dart';
 import '../data/safety_content_repository.dart';
 
 class SafetyContentPage extends ConsumerWidget {
@@ -12,7 +12,10 @@ class SafetyContentPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final contents = ref.watch(safetyContentsProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text('Orientacoes')),
+      appBar: AppBar(
+        leading: const AppBackButton(),
+        title: const Text('Orientacoes'),
+      ),
       body: contents.when(
         loading: () => const Center(
           child: Column(

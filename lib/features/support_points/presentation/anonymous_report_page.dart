@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/widgets/app_back_button.dart';
+
 class AnonymousReportPage extends ConsumerWidget {
   const AnonymousReportPage({super.key});
 
@@ -9,6 +11,7 @@ class AnonymousReportPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
+        leading: const AppBackButton(),
         title: const Text('Denúncia anônima'),
       ),
       body: ListView(

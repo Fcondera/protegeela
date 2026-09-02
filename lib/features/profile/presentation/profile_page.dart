@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/widgets/app_back_button.dart';
 import '../../../core/widgets/app_state_view.dart';
 import '../../authentication/data/demo_session_repository.dart';
 import '../../authentication/data/auth_repository.dart';
@@ -39,7 +40,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   Widget build(BuildContext context) {
     final profile = ref.watch(currentProfileProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text('Perfil')),
+      appBar: AppBar(
+        leading: const AppBackButton(),
+        title: const Text('Perfil'),
+      ),
       body: profile.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (_, __) => const AppStateView(title: 'Erro', message: 'Nao foi possivel carregar seu perfil.'),

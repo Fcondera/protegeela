@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/widgets/app_back_button.dart';
+
 class PrivacyIntroPage extends StatelessWidget {
   const PrivacyIntroPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Privacidade')),
+      appBar: AppBar(
+        leading: const AppBackButton(fallbackLocation: '/apresentacao'),
+        title: const Text('Privacidade'),
+      ),
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 680),

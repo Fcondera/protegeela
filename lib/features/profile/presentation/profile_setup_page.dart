@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/utils/validators.dart';
+import '../../../core/widgets/app_back_button.dart';
 import '../data/profile_repository.dart';
 
 class ProfileSetupPage extends ConsumerStatefulWidget {
@@ -41,7 +42,10 @@ class _ProfileSetupPageState extends ConsumerState<ProfileSetupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Criar perfil')),
+      appBar: AppBar(
+        leading: const AppBackButton(fallbackLocation: '/login'),
+        title: const Text('Criar perfil'),
+      ),
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 520),

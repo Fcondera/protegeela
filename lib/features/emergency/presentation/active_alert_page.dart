@@ -8,8 +8,8 @@ import '../../../app/theme.dart';
 import '../../../core/config/app_config.dart';
 import '../../../core/services/emergency_call_service.dart';
 import '../../../core/services/location_service.dart';
+import '../../../core/widgets/app_back_button.dart';
 import '../../../core/widgets/app_state_view.dart';
-import '../../../core/widgets/quick_exit_button.dart';
 import '../../authentication/data/demo_session_repository.dart';
 import '../data/emergency_controller.dart';
 import '../data/emergency_repository.dart';
@@ -24,7 +24,10 @@ class ActiveAlertPage extends ConsumerWidget {
     final config = ref.watch(appConfigProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Alerta ativo')),
+      appBar: AppBar(
+        leading: const AppBackButton(),
+        title: const Text('Alerta ativo'),
+      ),
       body: state.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (_, __) => AppStateView(

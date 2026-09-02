@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/widgets/app_back_button.dart';
+
 class LocationIntroPage extends StatefulWidget {
   const LocationIntroPage({super.key});
 
@@ -26,7 +28,10 @@ class _LocationIntroPageState extends State<LocationIntroPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Localizacao')),
+      appBar: AppBar(
+        leading: const AppBackButton(fallbackLocation: '/privacidade'),
+        title: const Text('Localizacao'),
+      ),
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 680),

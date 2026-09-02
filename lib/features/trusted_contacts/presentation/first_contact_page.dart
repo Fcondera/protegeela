@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/widgets/app_back_button.dart';
+
 class FirstContactPage extends StatelessWidget {
   const FirstContactPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Primeiro contato')),
+      appBar: AppBar(
+        leading: const AppBackButton(),
+        title: const Text('Primeiro contato'),
+      ),
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 560),

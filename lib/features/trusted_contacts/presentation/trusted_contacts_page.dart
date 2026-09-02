@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/utils/validators.dart';
+import '../../../core/widgets/app_back_button.dart';
 import '../../../core/widgets/app_state_view.dart';
-import '../../../core/widgets/quick_exit_button.dart';
 import '../../authentication/data/demo_session_repository.dart';
 import '../data/trusted_contacts_repository.dart';
 
@@ -15,6 +15,7 @@ class TrustedContactsPage extends ConsumerWidget {
     final contacts = ref.watch(trustedContactsProvider);
     return Scaffold(
       appBar: AppBar(
+        leading: const AppBackButton(),
         title: const Text('Rede de apoio'),
         actions: [
           IconButton(onPressed: () => _showAddContact(context, ref), icon: const Icon(Icons.person_add), tooltip: 'Adicionar contato'),

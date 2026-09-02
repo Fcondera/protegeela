@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/utils/validators.dart';
+import '../../../core/widgets/app_back_button.dart';
 import '../data/auth_repository.dart';
 
 class RegisterPage extends ConsumerStatefulWidget {
@@ -62,7 +63,10 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Cadastro')),
+      appBar: AppBar(
+        leading: const AppBackButton(fallbackLocation: '/login'),
+        title: const Text('Cadastro'),
+      ),
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 560),

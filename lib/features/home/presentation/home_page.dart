@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/widgets/app_state_view.dart';
-import '../../../core/widgets/quick_exit_button.dart';
 import '../../../features/emergency/data/emergency_controller.dart';
 import '../../../features/emergency/presentation/emergency_button.dart';
 import '../../../features/profile/data/profile_repository.dart';
@@ -15,9 +14,10 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final profile = ref.watch(currentProfileProvider);
     final emergency = ref.watch(emergencyControllerProvider);
+    final isDesktop = MediaQuery.sizeOf(context).width >= 900;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('ProtegeEla')),
+      appBar: isDesktop ? AppBar(title: const Text('ProtegeEla')) : null,
       body: profile.when(
         loading: () => const Center(
           child: Column(

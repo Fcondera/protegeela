@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/widgets/quick_exit_button.dart';
-
 class AnonymousReportPage extends ConsumerWidget {
   const AnonymousReportPage({super.key});
 
@@ -15,7 +13,7 @@ class AnonymousReportPage extends ConsumerWidget {
       ),
       body: ListView(
         padding: const EdgeInsets.all(20),
-        children: const [
+        children: [
           Card(
             child: Padding(
               padding: EdgeInsets.all(16),

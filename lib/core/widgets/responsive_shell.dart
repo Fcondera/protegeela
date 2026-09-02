@@ -45,16 +45,123 @@ class ResponsiveShell extends StatelessWidget {
 
     return Scaffold(
       body: child,
-      bottomNavigationBar: NavigationBar(
+      bottomNavigationBar: _PillNavigationBar(
+        destinations: destinations,
         selectedIndex: selectedIndex,
-        onDestinationSelected: (value) => context.go(destinations[value].path),
-        destinations: [
-          for (final item in destinations)
-            NavigationDestination(
-              icon: Icon(item.icon),
-              label: item.label,
+        onSelected: (value) => context.go(destinations[value].path),
+      ),
+    );
+  }
+}
+
+class _PillNavigationBar extends StatelessWidget {
+  const _PillNavigationBar({
+    required this.destinations,
+    required this.selectedIndex,
+    required this.onSelected,
+  });
+
+  final List<_Destination> destinations;
+  final int selectedIndex;
+  final ValueChanged<int> onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+
+    return SafeArea(
+      minimum: const EdgeInsets.fromLTRB(16, 8, 16, 14),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(999),
+          border: Border.all(color: scheme.outlineVariant),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x22000000),
+              blurRadius: 18,
+              offset: Offset(0, 8),
             ),
-        ],
+          ],
+        ),
+        child: SizedBox(
+          height: 64,
+          child: Row(
+            children: [
+              for (var index = 0; index < destinations.length; index++)
+                Expanded(
+                  child: _PillNavigationItem(
+                    destination: destinations[index],
+                    selected: selectedIndex == index,
+                    onTap: () => onSelected(index),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _PillNavigationItem extends StatelessWidget {
+  const _PillNavigationItem({
+    required this.destination,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final _Destination destination;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final color = selected ? scheme.primary : scheme.onSurfaceVariant;
+
+    return Tooltip(
+      message: destination.label,
+      child: InkWell(
+        onTap: onTap,
+        customBorder: const StadiumBorder(),
+        child: Semantics(
+          button: true,
+          selected: selected,
+          label: destination.label,
+          child: Center(
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 180),
+              curve: Curves.easeOut,
+              padding: EdgeInsets.symmetric(horizontal: selected ? 12 : 8, vertical: 8),
+              decoration: BoxDecoration(
+                color: selected ? scheme.primary.withOpacity(0.12) : Colors.transparent,
+                borderRadius: BorderRadius.circular(999),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(destination.icon, color: color, size: 24),
+                  if (selected) ...[
+                    const SizedBox(width: 6),
+                    Flexible(
+                      child: Text(
+                        destination.label,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: color,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

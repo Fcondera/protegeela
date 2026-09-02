@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,6 +21,7 @@ class AlertsMapPage extends ConsumerStatefulWidget {
 class _AlertsMapPageState extends ConsumerState<AlertsMapPage> {
   final _mapController = MapController();
   final _search = TextEditingController();
+  Timer? _refreshTimer;
   bool _showAlerts = true;
   bool _showSupport = true;
   List<PublicAlertMarker> _alerts = const [];
@@ -28,11 +31,15 @@ class _AlertsMapPageState extends ConsumerState<AlertsMapPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => _loadAlerts());
+    _refreshTimer = Timer.periodic(const Duration(seconds: 8), (_) {
+      if (mounted) _loadAlerts();
+    });
   }
 
   @override
   void dispose() {
     _search.dispose();
+    _refreshTimer?.cancel();
     super.dispose();
   }
 
@@ -62,7 +69,7 @@ class _AlertsMapPageState extends ConsumerState<AlertsMapPage> {
     final center = LatLng(config.defaultLatitude, config.defaultLongitude);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Mapa'), actions: const [QuickExitButton()]),
+      appBar: AppBar(title: const Text('Mapa')),
       body: LayoutBuilder(
         builder: (context, constraints) {
           final sidePanel = _Panel(

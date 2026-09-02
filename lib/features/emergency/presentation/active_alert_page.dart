@@ -24,7 +24,7 @@ class ActiveAlertPage extends ConsumerWidget {
     final config = ref.watch(appConfigProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Alerta ativo'), actions: const [QuickExitButton()]),
+      appBar: AppBar(title: const Text('Alerta ativo')),
       body: state.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (_, __) => AppStateView(

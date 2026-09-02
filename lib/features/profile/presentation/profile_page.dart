@@ -50,7 +50,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           return ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              ListTile(leading: const Icon(Icons.person_outline), title: Text(value.fullName), subtitle: Text(value.phone)),
               SwitchListTile(
                 value: value.privacyMode == 'discreet',
                 onChanged: (enabled) async {

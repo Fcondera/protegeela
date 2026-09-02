@@ -35,6 +35,16 @@ class EmergencyController extends AsyncNotifier<EmergencyState> {
 
     final demoActive = await ref.read(demoSessionProvider.future);
     if (demoActive) {
+      double publicLatitude = -3.119;
+      double publicLongitude = -60.022;
+      try {
+        final location = await ref.read(locationServiceProvider).captureCurrent();
+        publicLatitude = location.latitude;
+        publicLongitude = location.longitude;
+      } catch (_) {
+        // Mantém a posição padrão do protótipo caso a geolocalização não esteja disponível.
+      }
+
       final alert = EmergencyAlert(
         id: 'demo-alert-$requestId',
         userId: 'demo-user',
@@ -44,8 +54,8 @@ class EmergencyController extends AsyncNotifier<EmergencyState> {
         locationStatus: 'captured',
         startedAt: DateTime.now().toUtc(),
         publicVisibility: true,
-        publicLatitude: -3.119,
-        publicLongitude: -60.022,
+        publicLatitude: publicLatitude,
+        publicLongitude: publicLongitude,
       );
       await ref.read(notificationServiceProvider).notifyAlertCreated(alert.id);
       state = AsyncData(

@@ -17,9 +17,22 @@ class SupportPointsPage extends ConsumerWidget {
     final points = ref.watch(supportPointsProvider);
     final config = ref.watch(appConfigProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text('Pontos de apoio'), actions: const [QuickExitButton()]),
+      appBar: AppBar(title: const Text('Pontos de apoio')),
       body: points.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image(
+                image: AssetImage('assets/config/img/scrennshort.png'),
+                width: 120,
+                height: 120,
+              ),
+              SizedBox(height: 16),
+              CircularProgressIndicator(),
+            ],
+          ),
+        ),
         error: (_, __) => AppStateView(title: 'Erro', message: 'Nao foi possivel carregar pontos de apoio.', actionLabel: 'Tentar novamente', onAction: () => ref.invalidate(supportPointsProvider)),
         data: (items) {
           if (items.isEmpty) {

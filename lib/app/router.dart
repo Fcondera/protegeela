@@ -25,7 +25,9 @@ import '../features/profile/data/profile_repository.dart';
 import '../features/profile/presentation/profile_page.dart';
 import '../features/profile/presentation/profile_setup_page.dart';
 import '../features/safety_content/presentation/safety_content_page.dart';
+import '../features/support_points/presentation/anonymous_report_page.dart';
 import '../features/support_points/presentation/support_points_page.dart';
+import '../features/support_points/presentation/women_police_page.dart';
 import '../features/trusted_contacts/presentation/first_contact_page.dart';
 import '../features/trusted_contacts/presentation/trusted_contacts_page.dart';
 
@@ -71,6 +73,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(path: '/alerta-ativo', builder: (_, __) => const ActiveAlertPage()),
       GoRoute(path: '/apoio', builder: (_, __) => const SupportPointsPage()),
+      GoRoute(path: '/denuncia-anonima', builder: (_, __) => const AnonymousReportPage()),
+      GoRoute(path: '/delegacia-da-mulher', builder: (_, __) => const WomenPolicePage()),
       GoRoute(path: '/orientacoes', builder: (_, __) => const SafetyContentPage()),
       GoRoute(path: '/admin', builder: (_, __) => const AdminDashboardPage()),
     ],

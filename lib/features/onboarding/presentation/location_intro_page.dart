@@ -1,8 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 
-class LocationIntroPage extends StatelessWidget {
+class LocationIntroPage extends StatefulWidget {
   const LocationIntroPage({super.key});
+
+  @override
+  State<LocationIntroPage> createState() => _LocationIntroPageState();
+}
+
+class _LocationIntroPageState extends State<LocationIntroPage> {
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() async {
+      final permission = await Geolocator.requestPermission();
+      if (mounted && permission == LocationPermission.deniedForever) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Localizacao foi bloqueada. Voce pode liberar nas configuracoes do dispositivo.')),
+        );
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

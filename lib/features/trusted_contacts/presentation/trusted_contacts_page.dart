@@ -17,7 +17,6 @@ class TrustedContactsPage extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Rede de apoio'),
         actions: [
-          const QuickExitButton(),
           IconButton(onPressed: () => _showAddContact(context, ref), icon: const Icon(Icons.person_add), tooltip: 'Adicionar contato'),
         ],
       ),

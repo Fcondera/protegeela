@@ -20,7 +20,7 @@ class OnboardingPage extends StatelessWidget {
                   Text('ProtegeEla', style: Theme.of(context).textTheme.headlineLarge, textAlign: TextAlign.center),
                   const SizedBox(height: 16),
                   const Text(
-                    'Uma PWA open source para acionar sua rede de apoio, compartilhar localizacao com consentimento e encontrar pontos de atendimento.',
+                    'Acesse o protótipo e explore a experiência inicial do app.',
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 24),

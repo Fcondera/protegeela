@@ -12,9 +12,22 @@ class SafetyContentPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final contents = ref.watch(safetyContentsProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text('Orientacoes'), actions: const [QuickExitButton()]),
+      appBar: AppBar(title: const Text('Orientacoes')),
       body: contents.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image(
+                image: AssetImage('assets/config/img/scrennshort.png'),
+                width: 120,
+                height: 120,
+              ),
+              SizedBox(height: 16),
+              CircularProgressIndicator(),
+            ],
+          ),
+        ),
         error: (_, __) => AppStateView(title: 'Erro', message: 'Nao foi possivel carregar orientacoes.', actionLabel: 'Tentar novamente', onAction: () => ref.invalidate(safetyContentsProvider)),
         data: (items) {
           if (items.isEmpty) {

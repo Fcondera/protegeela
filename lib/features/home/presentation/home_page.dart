@@ -17,9 +17,22 @@ class HomePage extends ConsumerWidget {
     final emergency = ref.watch(emergencyControllerProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('ProtegeEla'), actions: const [QuickExitButton()]),
+      appBar: AppBar(title: const Text('ProtegeEla')),
       body: profile.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image(
+                image: AssetImage('assets/config/img/scrennshort.png'),
+                width: 120,
+                height: 120,
+              ),
+              SizedBox(height: 16),
+              CircularProgressIndicator(),
+            ],
+          ),
+        ),
         error: (_, __) => const AppStateView(title: 'Algo deu errado', message: 'Nao foi possivel carregar seu perfil.'),
         data: (profile) {
           if (profile == null) {
@@ -41,8 +54,7 @@ class HomePage extends ConsumerWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Ola, ${profile.firstName}', style: Theme.of(context).textTheme.headlineMedium),
-                            Text(activeAlert?.isActive == true ? 'Alerta ativo' : 'Voce esta segura?'),
+                            Text(activeAlert?.isActive == true ? 'Alerta ativo' : 'Voce esta segura?', style: Theme.of(context).textTheme.headlineMedium),
                           ],
                         ),
                         if (activeAlert?.isActive == true)
@@ -93,7 +105,7 @@ class HomePage extends ConsumerWidget {
                     GridView.count(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      crossAxisCount: MediaQuery.sizeOf(context).width >= 720 ? 4 : 2,
+                      crossAxisCount: MediaQuery.sizeOf(context).width >= 720 ? 3 : 2,
                       mainAxisSpacing: 12,
                       crossAxisSpacing: 12,
                       childAspectRatio: 1.2,
@@ -101,6 +113,8 @@ class HomePage extends ConsumerWidget {
                         _Shortcut(icon: Icons.map_outlined, label: 'Mapa', onTap: () => context.go('/mapa')),
                         _Shortcut(icon: Icons.people_outline, label: 'Contatos', onTap: () => context.go('/contatos')),
                         _Shortcut(icon: Icons.local_hospital_outlined, label: 'Apoio', onTap: () => context.go('/apoio')),
+                        _Shortcut(icon: Icons.shield_outlined, label: 'Denúncia', onTap: () => context.go('/denuncia-anonima')),
+                        _Shortcut(icon: Icons.woman_2_outlined, label: 'Delegacia', onTap: () => context.go('/delegacia-da-mulher')),
                         _Shortcut(icon: Icons.menu_book_outlined, label: 'Orientacoes', onTap: () => context.go('/orientacoes')),
                       ],
                     ),

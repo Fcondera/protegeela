@@ -22,7 +22,7 @@ class AdminDashboardPage extends ConsumerWidget {
 
     final metrics = ref.watch(adminMetricsProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text('Administracao'), actions: const [QuickExitButton()]),
+      appBar: AppBar(title: const Text('Administracao')),
       body: metrics.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (_, __) => AppStateView(title: 'Erro', message: 'Nao foi possivel carregar indicadores.', actionLabel: 'Tentar novamente', onAction: () => ref.invalidate(adminMetricsProvider)),
